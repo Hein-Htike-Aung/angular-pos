@@ -1,0 +1,60 @@
+<app-header></app-header>
+
+<div class="container mt-5">
+  <h2 class="text-primary-color">
+    <i class="fa fa-product-hunt"></i> Product Information
+  </h2>
+
+  <div class="d-flex justify-content-center gap-5 mt-5">
+    <div>
+      <img
+        [src]="displayPhoto(selectedPhotoIndex)"
+        class="product-info-image"
+      />
+      <div class="d-flex mt-3 gap-2">
+        <div *ngFor="let p of productDto?.photos; index as i">
+          <img
+            ngClass="{{
+              selectedPhotoIndex == i ? 'border border-3 border-primary' : ''
+            }}"
+            (click)="displayPhoto(i)"
+            [src]="p.photo"
+            class="card-mini-image"
+          />
+        </div>
+      </div>
+    </div>
+    <div>
+      <h4 class="display-2">{{ productDto?.productName }}</h4>
+      <p>Category: {{ productDto?.subCategoryDto.categoryName }}</p>
+      <p>SubCategory: {{ productDto?.subCategoryDto.subCategoryName }}</p>
+      <p>Brand: {{ productDto?.brandDto.brandName }}</p>
+      <p>Remaining Quantity: {{ productDto?.quantity }}</p>
+
+      <div class="row my-4">
+        <div class="col">
+          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle (click)="reduceQuantity()" >
+              <i class="fa fa-minus text-danger"></i>
+            </mat-button-toggle>
+            <mat-button-toggle>
+              <span class="mx-3">{{ quantity }}</span>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="addQuantity()">
+              <i class="fa fa-plus text-primary"></i>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <button [routerLink]="'/'" class="btn btn-outline-secondary me-3">Back</button>
+          <button (click)="addToCart()" class="btn btn-primary">
+            <i class="fa fa-plus"></i> Add To Cart
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,91 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-4">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td>EmployeeName</td>
+            <td>
+              <strong>{{ purchase.employeeDto.fullName }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>EmployeePhone</td>
+            <td>
+              <strong>{{ purchase.employeeDto.phone }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>EmployeeEmail</td>
+            <td>
+              <strong>{{ purchase.employeeDto.email }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="col-4"></div>
+
+    <div class="col-4">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td>Supplier Name</td>
+            <td>
+              <strong>{{ purchase.supplierDto.fullName }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Supplier Organization</td>
+            <td>
+              <strong>{{ purchase.supplierDto.orgName }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Supplier Phone</td>
+            <td>
+              <strong>{{ purchase.supplierDto.phone }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Supplier Address</td>
+            <td>
+              <strong>{{ purchase.supplierDto.address }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Category</th>
+        <th>Brand</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of purchase.purchaseDetails; index as i">
+        <td>{{ p.productResponse.productName }}</td>
+        <td>{{ p.productResponse.subCategoryDto.subCategoryName }}</td>
+        <td>{{ p.productResponse.brandDto.brandName }}</td>
+        <td>{{ p.quantity }}</td>
+        <td>{{ getUnitTotal(i) | currency }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <span class="total-text"
+          >Total Amount : <span>{{ totalAmount | currency }}</span></span
+        >
+      </tr>
+    </tfoot>
+  </table>
+
+  <button (click)="print()" class="float-end mt-5 btn btn-light">Print</button>
+</div>

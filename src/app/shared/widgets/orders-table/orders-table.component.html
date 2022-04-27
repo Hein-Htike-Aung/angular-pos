@@ -1,0 +1,192 @@
+<!-- Search -->
+<div class="row mb-4">
+  <div class="col-9">
+    <app-date-range (dateRangeSearch)="dateSearch($event)"></app-date-range>
+  </div>
+  <div class="col-3">
+    <mat-form-field>
+      <input
+        matInput
+        type="search"
+        placeholder="Search Order..."
+        style="width: 20rem"
+        [(ngModel)]="keyword"
+        (input)="search()"
+        class="float-end"
+      />
+    </mat-form-field>
+  </div>
+</div>
+
+<!-- Table -->
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Order Date</th>
+      <th *ngIf="ordersType === 'ConfirmedOrders'">Delivery Date</th>
+      <th *ngIf="ordersType === 'ConfirmedOrders'">Employee</th>
+      <th>Customer</th>
+      <th>Order Details</th>
+      <th>Unit Total</th>
+      <th *ngIf="ordersType === 'PendingOrders'">Paid By</th>
+      <th>Description</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let o of orderList; index as i">
+      <td>
+        <span class="link" (click)="goToReport(o)">{{
+          o.orderDate | instantDate | date
+        }}</span>
+      </td>
+      <th *ngIf="ordersType === 'ConfirmedOrders'">
+        {{ o.deliveryDate | instantDate | date }}
+      </th>
+      <td *ngIf="ordersType === 'ConfirmedOrders'">
+        <span
+          class="link"
+          (click)="showEmployeeOrCustomer(o.employeeDto, null)"
+        >
+          {{ o.employeeDto.fullName }}
+        </span>
+      </td>
+      <td> 
+        <span
+          class="link"
+          (click)="showEmployeeOrCustomer(null, o.customerDto)"
+          >{{ o.customerDto.fullName }}</span
+        >
+      </td>
+      <td>
+        <span *ngFor="let od of o.orderDetails">
+          <span>{{ od.productResponse.productName }} : {{ od.quantity }}</span>
+          <br />
+        </span>
+      </td>
+      <td>
+        {{ getUnitTotal(i) | currency }}
+      </td>
+      <td *ngIf="ordersType === 'PendingOrders'">
+        {{ o.payment.cardType }}
+      </td>
+      <td>{{ o.description }}</td>
+      <td>
+        <button
+          *ngIf="ordersType === 'PendingOrders'"
+          (click)="confirmOrder(o.id)"
+          class="btn btn-success"
+        >
+          Confirm
+        </button>
+
+        <span *ngIf="ordersType === 'ConfirmedOrders'" class="badge bg-success"
+          >Confirmed</span
+        >
+      </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <tr>
+      <span class="total-text"
+        >Total Amount :
+        <span class="text-primary-color">{{
+          totalAmount | currency
+        }}</span></span
+      >
+    </tr>
+  </tfoot>
+</table>
+
+<!-- Product Info Modal -->
+<app-info-modal-dialog
+  [title]="
+    selectedEmployee == null ? 'Customer Information' : 'Employee Information'
+  "
+>
+  <!-- Employee -->
+  <div *ngIf="selectedEmployee != null">
+    <div class="mb-3">
+      <label>FullName</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.fullName }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Phone</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.phone }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.email }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Address</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.address }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Status</label>
+      <h2 [ngClass]="selectedEmployee.enabled ? 'text-success' : 'text-danger'">
+        {{ selectedEmployee.enabled ? "Active" : "Inactive" }}
+      </h2>
+    </div>
+  </div>
+
+  <!-- Customer -->
+  <div *ngIf="selectedCustomer != null">
+    <div class="mb-3">
+      <label>FullName</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedCustomer.fullName }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Phone</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedCustomer.phone }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedCustomer.email }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Address</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedCustomer.address }}"
+      />
+    </div>
+  </div>
+</app-info-modal-dialog>

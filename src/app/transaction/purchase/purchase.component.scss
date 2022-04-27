@@ -1,0 +1,20 @@
+.product-img {
+  height: 7rem;
+  width: 7rem;
+  object-fit: cover;
+}
+
+.table-input {
+  width: 4rem;
+  height: 2rem;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+
+.total-text {
+  position: absolute;
+  right: 15.5rem;
+}

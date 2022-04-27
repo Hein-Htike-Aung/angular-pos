@@ -1,0 +1,42 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Add New Brand
+  </h3>
+
+  <form class="row" [formGroup]="brandForm">
+    <div class="col">
+      <div class="mb-4">
+        <input
+          type="text"
+          [value]="categoryDto?.categoryName"
+          readonly
+          class="form-control"
+        />
+      </div>
+      <div class="mb-4" formArrayName="brands">
+          <div *ngFor="let _ of brandsFormArray.controls; index as i, last as l, first as f">
+              <div class="input-group mb-3" [formGroupName]="i">
+                  <span (click)="deleteBrandControl(i)" class="input-group-text"><i class="bi bi-x-lg text-danger"></i></span>
+                  <input type="text" class="form-control" formControlName="brandName">
+                </div>
+          </div>
+      </div>
+      <div class="mb-3">
+        <button routerLink="/category" class="btn btn-outline-secondary me-3">
+          <i class="fa fa-angle-left"></i> Back
+        </button>
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-4">
+        <button (click)="addBrandControl()" class="btn btn-success me-3">
+          <i class="fa fa-plus"></i> Add Brand
+        </button>
+
+        <button (click)="save()" class="btn btn-primary">SAVE CHANGES</button>
+      </div>
+    </div>
+  </form>
+</div>

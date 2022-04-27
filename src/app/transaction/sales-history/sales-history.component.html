@@ -1,0 +1,9 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container mb-5">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Sale History
+  </h3>
+
+  <app-orders-table [ordersType]="'ConfirmedOrders'" [orderList]="orderList"></app-orders-table>
+</div>

@@ -1,0 +1,20 @@
+<div class="confirm-modal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border: none">
+      <div class="alert alert-danger">
+        <ng-content></ng-content>
+
+        <div class="float-end">
+          <button (click)="close()" class="btn btn-light me-2">Cancel</button>
+          <button
+            [disabled]="disableSubmitButton"
+            (click)="submit()"
+            class="btn btn-danger"
+          >
+            OK
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

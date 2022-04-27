@@ -1,0 +1,74 @@
+<app-header></app-header>
+
+<div class="container mt-5">
+  <h2 class="text-primary-color"><i class="fa fa-bars"></i> Check Out</h2>
+
+  <!-- Customer Info -->
+  <div class="row">
+    <div class="col-6">
+      <div class="card">
+        <div class="card-body">
+          <table class="table table-borderless">
+            <tbody>
+              <tr>
+                <td>CustomerName</td>
+                <td>
+                  <strong>{{ customerDto?.fullName }}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>CustomerPhone</td>
+                <td>
+                  <strong>{{ customerDto?.phone }}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Customer Email</td>
+                <td>
+                  <strong>{{ customerDto?.email }}</strong>
+                </td>
+              </tr>
+              <tr>
+                <td>Customer Address</td>
+                <td>
+                  <strong>{{ customerDto?.address }}</strong>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-6"></div>
+  </div>
+
+  <!-- Product Info -->
+  <div class="my-3">
+    <app-cart-items></app-cart-items>
+  </div>
+
+  <div class="my-3 mt-5">
+    <textarea
+      [(ngModel)]="description"
+      (change)="1"
+      type="textarea"
+      class="form-control"
+      placeholder="Enter Description"
+    ></textarea>
+  </div>
+
+  <!-- Buttons -->
+  <div class="row">
+    <div class="col">
+      <button
+        [routerLink]="'/transaction/cus-payment-info'"
+        class="btn btn-outline-secondary me-3"
+      >
+        Back
+      </button>
+      <button (click)="checkOut()" class="btn btn-primary">
+        Check Out <i class="fa fa-check"></i>
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,188 @@
+<app-side-bar></app-side-bar>
+
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i>
+    {{ employeeId == 0 ? "Add New" : "Edit" }} Employee
+  </h3>
+
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="employeeForm" (ngSubmit)="save()">
+        <div class="row">
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Full Name</label>
+              <input
+                type="text"
+                class="form-control"
+                required
+                formControlName="fullName"
+                [readonly]="employeeId != 0"
+                [ngClass]="showError('fullName') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('fullName')" class="form-text text-danger">
+                Enter Full Name
+              </span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Phone</label>
+              <input
+                type="text"
+                class="form-control"
+                required
+                formControlName="phone"
+                [readonly]="employeeId == 0 && isEdit"
+                [ngClass]="showError('phone') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('phone')" class="form-text text-danger">
+                Enter Phone Number
+              </span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                type="text"
+                class="form-control"
+                required
+                formControlName="email"
+                [readonly]="employeeId == 0 && isEdit"
+                [ngClass]="showError('email') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('email')" class="form-text text-danger">
+                Provide valid Email Address
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Address</label>
+          <input
+            type="text"
+            class="form-control"
+            required
+            formControlName="address"
+            [readonly]="employeeId == 0 && isEdit"
+            [ngClass]="showError('address') ? 'is-invalid' : ''"
+          />
+          <span *ngIf="showError('address')" class="form-text text-danger">
+            Enter Address
+          </span>
+        </div>
+        <div class="mb-3">
+          <div class="form-check-inline">
+            <input
+              formControlName="gender"
+              type="radio"
+              value="MALE"
+              class="form-check-input me-1"
+              id="male"
+              [attr.disabled]="employeeId == 0 && isEdit"
+              [ngClass]="showError('gender') ? 'is-invalid' : ''"
+            />
+            <label class="form-check-label" for="male">Male</label>
+          </div>
+          <div class="form-check-inline">
+            <input
+              formControlName="gender"
+              type="radio"
+              value="FEMALE"
+              class="form-check-input me-1"
+              id="female"
+              [attr.disabled]="employeeId == 0 && isEdit"
+              [ngClass]="showError('gender') ? 'is-invalid' : ''"
+            />
+            <label class="form-check-label" for="female">Female</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Date of birth</label>
+              <input
+                type="date"
+                class="form-control"
+                required
+                formControlName="dob"
+                [readonly]="employeeId != 0"
+                [ngClass]="showError('dob') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('dob')" class="form-text text-danger">
+                Provide your DOB
+              </span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Marital Status</label>
+              <input
+                type="text"
+                class="form-control"
+                required
+                formControlName="maritalStatus"
+                [readonly]="employeeId == 0 && isEdit"
+                [ngClass]="showError('maritalStatus') ? 'is-invalid' : ''"
+              />
+              <span
+                *ngIf="showError('maritalStatus')"
+                class="form-text text-danger"
+              >
+                Provide Your Marital Status
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div class="row" *ngIf="employeeId == 0">
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Username</label>
+              <input
+                type="text"
+                class="form-control"
+                required
+                formControlName="username"
+                [ngClass]="showError('username') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('username')" class="form-text text-danger">
+                Enter username
+              </span>
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Password</label>
+              <input
+                type="password"
+                class="form-control"
+                required
+                formControlName="password"
+                [ngClass]="showError('password') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('password')" class="form-text text-danger">
+                Password
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <button (click)="goToEmployeeList()" class="btn btn-secondary me-2">
+            Cancel
+          </button>
+          <button
+            [disabled]="employeeForm.invalid && employeeId == 0 && !isEdit"
+            type="submit"
+            class="btn btn-primary"
+          >
+            Submit
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

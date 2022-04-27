@@ -1,0 +1,19 @@
+<app-header></app-header>
+
+<div class="container mt-5">
+  <h2 class="text-primary-color">
+    <i class="fa fa-bars"></i> Cart Information
+  </h2>
+
+  <app-cart-items></app-cart-items>
+
+  <button [routerLink]="'/'" class="btn btn-outline-secondary mt-2 me-2">
+    Back
+  </button>
+  <button
+    [routerLink]="'/transaction/cus-payment-info'"
+    class="btn btn-primary mt-2"
+  >
+    Next <i class="fa fa-angle-right"></i>
+  </button>
+</div>

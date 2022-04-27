@@ -1,0 +1,207 @@
+<app-side-bar></app-side-bar>
+
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i>
+    {{ productDto?.id ? "Edit Product" : "Add New Product" }}
+  </h3>
+
+  <form [formGroup]="productForm">
+    <div class="row">
+      <div class="col">
+        <div class="mb-3">
+          <label class="form-label">ProductName</label>
+          <input
+            type="text"
+            class="form-control"
+            formControlName="productName"
+            placeholder="Product Name"
+            [ngClass]="showError('productName') ? 'is-invalid' : ''"
+          />
+        </div>
+        <div class="mb-3">
+          <label class="form-label">Category</label>
+          <select
+            formControlName="categoryId"
+            (change)="categoryOnChange($event.target['value'])"
+            class="form-control"
+            [ngClass]="showError('categoryId') ? 'is-invalid' : ''"
+          >
+            <option value="">-Select Category-</option>
+            <option *ngFor="let c of categories" [value]="c.id">
+              {{ c.categoryName }}
+            </option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <div class="row">
+            <div class="col">
+              <label class="form-label">SubCategory</label>
+              <select
+                class="form-control"
+                formControlName="subCategoryId"
+                [ngClass]="showError('subCategoryId') ? 'is-invalid' : ''"
+              >
+                <option value="">-Select Subcategory-</option>
+                <option [ngValue]="sc.id" *ngFor="let sc of subCategories">
+                  {{ sc.subCategoryName }}
+                </option>
+              </select>
+              <span
+                *ngIf="showError('subCategoryId')"
+                class="form-text text-danger"
+              >
+                Select SubCategory
+              </span>
+            </div>
+            <div class="col">
+              <label class="form-label">Brand</label>
+              <select
+                class="form-control"
+                formControlName="brandId"
+                [ngClass]="showError('brandId') ? 'is-invalid' : ''"
+              >
+                <option value="">-Select Brand-</option>
+                <option [ngValue]="b.id" *ngFor="let b of brands">
+                  {{ b.brandName }}
+                </option>
+              </select>
+              <span *ngIf="showError('brandId')" class="form-text text-danger">
+                Select Brand
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Quantity</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Quantity"
+                formControlName="quantity"
+                [ngClass]="showError('quantity') ? 'is-invalid' : ''"
+              />
+            </div>
+          </div>
+          <div class="col">
+            <div class="mb-3">
+              <label class="form-label">Price</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Price"
+                formControlName="price"
+                [ngClass]="showError('price') ? 'is-invalid' : ''"
+              />
+              <span *ngIf="showError('price')" class="form-text text-danger">
+                Provide Price
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mb-3">
+          <button class="btn btn-outline-success me-3" (click)="addPhoto()">
+            <i class="fa fa-plus"></i> Add Photo
+          </button>
+          <button class="btn btn-outline-success me-3" (click)="addProperty()">
+            <i class="fa fa-plus"></i> Add Property
+          </button>
+          <button class="btn btn-danger" (click)="confirmDelete()">
+            <i class="fa fa-plus"></i> Delete
+          </button>
+        </div>
+        <div class="mb-3">
+          <button
+            routerLink="/master/product/list"
+            class="btn btn-outline-secondary me-3"
+          >
+            <i class="fa fa-angle-left"></i> Cancel
+          </button>
+          <button
+            (click)="save()"
+            [disabled]="productForm.invalid"
+            class="btn btn-primary"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+      <div class="col">
+        <div class="mb-3" formArrayName="photos">
+          <label>Photo Urls</label>
+          <div
+            *ngFor="let _ of photos.controls; first as f; last as l; index as i"
+          >
+            <div class="input-group mb-2" [formGroupName]="i">
+              <span (click)="removePhoto(i)" class="input-group-text">
+                <i class="bi bi-x-lg text-danger"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="url"
+                formControlName="photo"
+                [ngClass]="
+                  showErrorForFormArray('photo', 'photos', i)
+                    ? 'is-invalid'
+                    : ''
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div class="mb-3" formArrayName="properties">
+          <label>Properties</label>
+          <div
+            *ngFor="
+              let _ of properties.controls;
+              first as f;
+              last as l;
+              index as i
+            "
+          >
+            <div class="input-group mb-2" [formGroupName]="i">
+              <span (click)="removeProperty(i)" class="input-group-text">
+                <i class="bi bi-x-lg text-danger"></i>
+              </span>
+              <input
+                type="text"
+                class="form-control me-2"
+                formControlName="propertyName"
+                placeholder="Name"
+                [ngClass]="
+                  showErrorForFormArray('propertyName', 'properties', i)
+                    ? 'is-invalid'
+                    : ''
+                "
+              />
+              <input
+                type="text"
+                class="form-control"
+                formControlName="propertyValue"
+                placeholder="Value"
+                [ngClass]="
+                  showErrorForFormArray('propertyValue', 'properties', i)
+                    ? 'is-invalid'
+                    : ''
+                "
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+<!-- Confirm Modal -->
+<app-confirm-modal-dialog
+  [disableSubmitButton]="false"
+  (submitButton)="delete($event)"
+>
+  <h4 class="alert-heading">DELETE PRODUCT</h4>
+  <p>Are you sure you want to delete {{ productDto?.productName }} ?</p>
+</app-confirm-modal-dialog>

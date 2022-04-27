@@ -1,0 +1,74 @@
+<app-side-bar></app-side-bar>
+
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Customer List
+  </h3>
+
+  <div class="row">
+    <div class="col">
+      <input
+        style="width: 20rem"
+        type="search"
+        [(ngModel)]="keyword"
+        (input)="search(keyword)"
+        placeholder="search customer..."
+        class="form-control"
+      />
+    </div>
+    <div class="col"></div>
+  </div>
+
+  <table class="table table-hover mt-5" *ngIf="customers?.length != 0">
+    <thead>
+      <tr>
+        <th>fullName</th>
+        <th>Username</th>
+        <th>email</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of customers">
+        <td>{{ c.fullName }}</td>
+        <td>{{ c.username }}</td>
+        <td>{{ c.email }}</td>
+        <td>{{ c.phone }}</td>
+        <td>{{ c.address }}</td>
+        <td>
+          <span
+            ngClass="{{ c.enabled ? 'bg-success' : 'bg-danger' }}"
+            class="badge"
+            >{{ c.enabled ? "ACTIVE" : "INACTIVE" }}</span
+          >
+        </td>
+        <td>
+          <i
+            (click)="confirmDeleteCustomer(c)"
+            class="bi bi-x-lg text-danger"
+          ></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="customers?.length == 0" class="col mt-5">
+    <div class="alert alert-info">
+      <h4 class="alert-heading">NO CUSTOMERS</h4>
+      <p>No Customer were found.</p>
+    </div>
+  </div>
+
+  <!-- Confirm Modal -->
+  <app-confirm-modal-dialog
+    [disableSubmitButton]="false"
+    (submitButton)="delete($event)"
+  >
+    <h4 class="alert-heading">BLOCK CUSTOMER</h4>
+    <p>Are you sure you want to block {{ customer?.fullName }} ?</p>
+  </app-confirm-modal-dialog>
+</div>

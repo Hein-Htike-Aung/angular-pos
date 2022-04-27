@@ -1,0 +1,110 @@
+<nav class="sidebar">
+  <div class="title">Hypie</div>
+  <ul>
+    <li
+      [routerLink]="['/admin-home']"
+      routerLinkActive="active"
+      *ngIf="userRole === 'ROLE_ADMIN'"
+    >
+      <a>Dashboard</a>
+    </li>
+    <li *ngIf="userRole === 'ROLE_ADMIN'">
+      <a (click)="showMemberDropDown()"
+        >Members
+        <span class="fa fa-caret-down first"></span>
+      </a>
+      <ul class="member-show">
+        <li
+          [routerLink]="['/master/employee/list']"
+          routerLinkActive="active"
+          (isActiveChange)="triggerMemberDropDown()"
+        >
+          <a>Employees</a>
+        </li>
+        <li
+          id="customer-list"
+          [routerLink]="['/master/customer/list']"
+          routerLinkActive="active"
+          (isActiveChange)="triggerMemberDropDown()"
+        >
+          <a>Customers</a>
+        </li>
+      </ul>
+    </li>
+    <li>
+      <a (click)="showMasterDropDown()" class="master-btn"
+        >Master Data
+        <span class="fa fa-caret-down second"></span>
+      </a>
+      <ul class="master-show">
+        <li
+          id="category"
+          [routerLink]="['/master/category']"
+          routerLinkActive="active"
+          (isActiveChange)="triggerMasterDropDown()"
+        >
+          <a>Category</a>
+        </li>
+        <li
+          id="subcategory"
+          [routerLink]="['/master/sub-category/list']"
+          routerLinkActive="active"
+          (isActiveChange)="triggerMasterDropDown()"
+        >
+          <a>SubCategory</a>
+        </li>
+        <li
+          id="brand"
+          [routerLink]="['/master/brand/list']"
+          routerLinkActive="active"
+          (isActiveChange)="triggerMasterDropDown()"
+        >
+          <a>Brand</a>
+        </li>
+        <li
+          [routerLink]="['/product/list']"
+          routerLinkActive="active"
+          (isActiveChange)="triggerMasterDropDown()"
+        >
+          <a>Product</a>
+        </li>
+      </ul>
+    </li>
+    <li
+      [routerLink]="['/transaction/order-list']"
+      routerLinkActive="active"
+      *ngIf="userRole === 'ROLE_ADMIN' || userRole === 'ROLE_EMPLOYEE'"
+    >
+      <a>Orders</a>
+    </li>
+    <li
+      [routerLink]="['/transaction/purchase']"
+      routerLinkActive="active"
+      *ngIf="userRole === 'ROLE_ADMIN' || userRole === 'ROLE_EMPLOYEE'"
+    >
+      <a>Acquisition</a>
+    </li>
+    <li [routerLink]="['/master/supplier']" routerLinkActive="active">
+      <a>Supplier</a>
+    </li>
+    <li
+      [routerLink]="['/transaction/purchase-list']"
+      routerLinkActive="active"
+      *ngIf="userRole === 'ROLE_ADMIN'"
+    >
+      <a>Purchase History</a>
+    </li>
+    <li
+      [routerLink]="['/transaction/sales-history']"
+      routerLinkActive="active"
+      *ngIf="userRole === 'ROLE_ADMIN'"
+    >
+      <a>Sales History</a>
+    </li>
+    <li><a (click)="logout()">Logout</a></li>
+  </ul>
+</nav>
+
+<h3 (click)="goToUserProfile()" class="text-primary-color profile-name">
+  <i class="fa fa-user"></i> {{ username }}
+</h3>

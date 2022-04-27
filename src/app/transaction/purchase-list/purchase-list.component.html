@@ -1,0 +1,178 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container mb-5">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Purchase History
+  </h3>
+
+  <!-- Search -->
+  <div class="row mb-4">
+    <div class="col-9">
+      <app-date-range (dateRangeSearch)="dateSearch($event)"></app-date-range>
+    </div>
+    <div class="col-3">
+      <mat-form-field>
+        <input
+          matInput
+          type="search"
+          placeholder="Search Purchase..."
+          style="width: 20rem"
+          [(ngModel)]="keyword"
+          (input)="search()"
+          class="float-end"
+        />
+      </mat-form-field>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Employee</th>
+        <th>Supplier</th>
+        <th>Details</th>
+        <th>Total</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of purchaseList; index as i">
+        <td>
+          <span class="link" (click)="goToReport(p)">{{ p.purchaseDate | instantDate | date }}</span>
+        </td>
+        <td>
+          <span
+            class="link"
+            (click)="showEmployeeOrSupplier(p.employeeDto, null)"
+            >{{ p.employeeDto.fullName }}</span
+          >
+        </td>
+        <td>
+          <span
+            class="link"
+            (click)="showEmployeeOrSupplier(null, p.supplierDto)"
+            >{{ p.supplierDto.fullName }}</span
+          >
+        </td>
+        <td>
+          <span *ngFor="let pd of p.purchaseDetails">
+            <span
+              >{{ pd.productResponse.productName }} : {{ pd.quantity }}</span
+            >
+            <br />
+          </span>
+        </td>
+        <td>
+          {{ getUnitTotal(i) | currency }}
+        </td>
+        <td>{{ p.description }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <span class="total-text"
+          >Total Amount :
+          <span class="text-primary-color">{{
+            totalAmount | currency
+          }}</span></span
+        >
+      </tr>
+    </tfoot>
+  </table>
+</div>
+
+<!-- Product Info Modal -->
+<app-info-modal-dialog
+  [title]="
+    selectedEmployee == null ? 'Supplier Information' : 'Employee Information'
+  "
+>
+  <!-- Employee -->
+  <div *ngIf="selectedEmployee != null">
+    <div class="mb-3">
+      <label>FullName</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.fullName }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Phone</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.phone }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Email</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.email }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Address</label>
+      <input
+        type="text"
+        readonly
+        class="form-control"
+        value="{{ selectedEmployee.address }}"
+      />
+    </div>
+    <div class="mb-3">
+      <label>Status</label>
+      <h2 [ngClass]="selectedEmployee.enabled ? 'text-success' : 'text-danger'">
+        {{ selectedEmployee.enabled ? "Active" : "Inactive" }}
+      </h2>
+    </div>
+  </div>
+  <!-- Supplier -->
+  <div *ngIf="selectedSupplier != null">
+    <div class="mb-3">
+      <div class="mb-3">
+        <label>FullName</label>
+        <input
+          type="text"
+          readonly
+          class="form-control"
+          value="{{ selectedSupplier.fullName }}"
+        />
+      </div>
+      <div class="mb-3">
+        <label>Organization Name</label>
+        <input
+          type="text"
+          readonly
+          class="form-control"
+          value="{{ selectedSupplier.orgName }}"
+        />
+      </div>
+      <div class="mb-3">
+        <label>Phone</label>
+        <input
+          type="text"
+          readonly
+          class="form-control"
+          value="{{ selectedSupplier.phone }}"
+        />
+      </div>
+      <div class="mb-3">
+        <label>Address</label>
+        <input
+          type="text"
+          readonly
+          class="form-control"
+          value="{{ selectedSupplier.address }}"
+        />
+      </div>
+    </div>
+  </div>
+</app-info-modal-dialog>

@@ -1,0 +1,85 @@
+<app-side-bar></app-side-bar>
+
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Employee List
+  </h3>
+
+  <div class="row">
+    <div class="col">
+      <input
+        style="width: 20rem"
+        type="search"
+        [(ngModel)]="keyword"
+        (input)="search(keyword)"
+        placeholder="search employee..."
+        class="form-control"
+      />
+    </div>
+    <div class="col">
+      <button (click)="goToEmployeeEdit(0)" class="btn btn-primary float-end">
+        Add Employee
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover mt-5" *ngIf="employees?.length != 0">
+    <thead>
+      <tr>
+        <th>fullName</th>
+        <th>phone</th>
+        <th>email</th>
+        <th>Address</th>
+        <th>Date of Birth</th>
+        <th>gender</th>
+        <th>maritalStatus</th>
+        <th>Status</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let e of employees">
+        <td>{{ e.fullName }}</td>
+        <td>{{ e.phone }}</td>
+        <td>{{ e.email }}</td>
+        <td>{{ e.address }}</td>
+        <td>{{ e.dob | instantDate | date }}</td>
+        <td>{{ e.gender }}</td>
+        <td>{{ e.maritalStatus }}</td>
+        <td>
+          <span
+            ngClass="{{ e.enabled ? 'bg-success' : 'bg-danger' }}"
+            class="badge"
+            >{{ e.enabled ? "ACTIVE" : "INACTIVE" }}</span
+          >
+        </td>
+        <td>
+          <i
+            (click)="goToEmployeeEdit(e.id)"
+            class="fa fa-pencil text-primary-color me-3"
+          ></i>
+          <i
+            (click)="confirmDeleteEmployee(e)"
+            class="bi bi-x-lg text-danger"
+          ></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="employees?.length == 0" class="col mt-5">
+    <div class="alert alert-info">
+      <h4 class="alert-heading">NO EMPLOYEES</h4>
+      <p>No Employee were found.</p>
+    </div>
+  </div>
+</div>
+
+<app-confirm-modal-dialog
+  [disableSubmitButton]="false"
+  (submitButton)="delete($event)"
+>
+  <h4 class="alert-heading">BLOCK EMPLOYEE</h4>
+  <p>Are you sure you want to block {{ employee?.fullName }} ?</p>
+</app-confirm-modal-dialog>

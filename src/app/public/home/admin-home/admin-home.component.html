@@ -1,0 +1,76 @@
+<app-side-bar></app-side-bar>
+
+<div class="side-bar-container">
+  <h3 class="text-primary-color"><i class="fa fa-bars"></i> Admin Dashboard</h3>
+ 
+  <div class="d-flex gap-3 mb-5">
+    <div class="card">
+      <div class="card-header">
+        <h3>This Month Income</h3>
+      </div>
+      <div class="card-body">
+        <span>{{ currentMonthIncome | currency }}</span>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header">
+        <h3>This Month Expense</h3>
+      </div>
+      <div class="card-body">
+        <span>{{ currentMonthExpense | currency }}</span>
+      </div>
+    </div>
+    <div class="ms-auto">
+      <h3>{{ date | date }}</h3>
+    </div>
+  </div>
+
+  <!-- Pie Chart -->
+  <div class="d-flex">
+    <google-chart
+      *ngIf="categoryPieChart != null"
+      style="width: 500px; height: 300px"
+      [title]="categoryPieChart?.title"
+      [type]="categoryPieChart?.type"
+      [data]="categoryPieChart?.data"
+      [columns]="categoryPieChart?.columns"
+      [options]="categoryPieChart?.options"
+    >
+    </google-chart>
+    <!-- Incomes and Expense -->
+    <google-chart
+      *ngIf="IncomeAndExpenseLinesChart != null"
+      style="width: 1000px; height: 400px"
+      [title]="IncomeAndExpenseLinesChart?.title"
+      [type]="IncomeAndExpenseLinesChart?.type"
+      [data]="IncomeAndExpenseLinesChart?.data"
+      [columns]="IncomeAndExpenseLinesChart?.columns"
+      [options]="IncomeAndExpenseLinesChart?.options"
+    >
+    </google-chart>
+  </div>
+
+  <!-- monthlyExpensesBarsChart -->
+  <div class="d-flex">
+    <google-chart
+      *ngIf="monthlyIncomesBarsChart != null"
+      style="width: 600px; height: 400px"
+      [title]="monthlyIncomesBarsChart?.title"
+      [type]="monthlyIncomesBarsChart?.type"
+      [data]="monthlyIncomesBarsChart?.data"
+      [columns]="monthlyIncomesBarsChart?.columns"
+      [options]="monthlyIncomesBarsChart?.options"
+    >
+    </google-chart>
+    <google-chart
+      *ngIf="monthlyExpensesBarsChart != null"
+      style="width: 600px; height: 400px"
+      [title]="monthlyExpensesBarsChart?.title"
+      [type]="monthlyExpensesBarsChart?.type"
+      [data]="monthlyExpensesBarsChart?.data"
+      [columns]="monthlyExpensesBarsChart?.columns"
+      [options]="monthlyExpensesBarsChart?.options"
+    >
+    </google-chart>
+  </div>
+</div>

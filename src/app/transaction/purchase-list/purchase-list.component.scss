@@ -1,0 +1,11 @@
+@import '../../../scss/utilities';
+
+.total-text {
+  position: absolute;
+  right: 22rem;
+}
+
+.link {
+  cursor: pointer;
+  color: $primary-color;
+}

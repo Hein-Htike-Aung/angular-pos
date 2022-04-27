@@ -1,0 +1,12 @@
+$primary-color: #16a2b5;
+
+.text {
+  &-primary-color {
+    color: $primary-color;
+  }
+}
+
+
+.bg-white {
+  background-color: #fff!important;
+}

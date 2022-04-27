@@ -1,0 +1,30 @@
+<div class="info-modal">
+  <div class="modal-dialog">
+    <div class="modal-content" style="border: none">
+      <div class="alert alert-light">
+        <div class="modal-header">
+          <h5 class="modal-title text-primary-color" id="exampleModalLabel">
+            {{ title }}
+          </h5>
+          <button
+            (click)="close()"
+            type="button"
+            class="btn-close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <ng-content></ng-content>
+        </div>
+        <div class="modal-footer">
+          <button
+            (click)="close()"
+            type="button"
+            class="btn btn-secondary"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

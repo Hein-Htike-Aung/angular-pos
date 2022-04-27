@@ -1,0 +1,331 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container mb-5">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Acquisition Products
+  </h3>
+
+  <form [formGroup]="purchaseForm">
+    <div class="row">
+      <div class="col">
+        <!-- Product -->
+        <div class="card">
+          <div class="card-header d-flex justify-content-between">
+            <h5 class="text-primary-color">Choose Product</h5>
+            <button
+              routerLink="/master/product/edit/0"
+              class="btn btn-outline-primary"
+            >
+              Add Product
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Category</label>
+              <select
+                class="form-control"
+                (change)="categoryOnChange($event.target['value'])"
+              >
+                <option value="">-Category-</option>
+                <option *ngFor="let c of categories" [value]="c.id">
+                  {{ c.categoryName }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <div class="row">
+                <div class="col">
+                  <label class="form-label">SubCategory</label>
+                  <select
+                    class="form-control"
+                    (change)="subCategoryOnChange($event.target['value'])"
+                  >
+                    <option value="">-SubCategory-</option>
+                    <option *ngFor="let sc of subCategories" [value]="sc.id">
+                      {{ sc.subCategoryName }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col">
+                  <label class="form-label">Brand</label>
+                  <select
+                    class="form-control"
+                    (change)="brandOnChange($event.target['value'])"
+                  >
+                    <option value="">-Brand-</option>
+                    <option *ngFor="let b of brands" [value]="b.id">
+                      {{ b.brandName }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Product</label>
+              <select
+                class="form-control"
+                formControlName="productId"
+                [ngClass]="showError('productId') ? 'is-invalid' : ''"
+                (change)="productOnChange($event.target['value'])"
+              >
+                <option value="">-Product-</option>
+                <option *ngFor="let p of products" [value]="p.id">
+                  {{ p?.productName }}
+                </option>
+              </select>
+            </div>
+          </div>
+          <div class="card-footer">
+            <button
+              (click)="checkProduct()"
+              class="btn btn-outline-success me-3"
+            >
+              Check Product
+            </button>
+            <button (click)="addProduct()" class="btn btn-primary">
+              <i class="fa fa-plus"></i> Add Product
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <!-- Supplier -->
+        <div class="card">
+          <div class="card-header d-flex justify-content-between">
+            <h5 class="text-primary-color">Choose Supplier</h5>
+            <button
+              routerLink="/master/supplier"
+              class="btn btn-outline-primary"
+            >
+              Add Supplier
+            </button>
+          </div>
+          <div class="card-body">
+            <div class="mb-3">
+              <label class="form-label">Choose Supplier's Organization</label>
+              <select
+                class="form-control"
+                formControlName="supplierId"
+                (change)="supplierOnChange($event.target['value'])"
+                [ngClass]="showError('supplierId') ? 'is-invalid' : ''"
+              >
+                <option value="">-Supplier's Org-</option>
+                <option [value]="s.id" *ngFor="let s of suppliers">
+                  {{ s.orgName }}
+                </option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Supplier's Name</label>
+              <input
+                type="text"
+                [value]="selectedSupplier?.fullName"
+                class="form-control"
+                readonly
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Supplier's Phone</label>
+              <input
+                type="text"
+                [value]="selectedSupplier?.phone"
+                class="form-control"
+                readonly
+              />
+            </div>
+
+            <div class="mb-3">
+              <label class="form-label">Supplier's Address</label>
+              <input
+                type="text"
+                [value]="selectedSupplier?.address"
+                class="form-control"
+                readonly
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col">
+        <!-- Products -->
+        <table class="table table-hover my-3" formArrayName="purchaseDetails">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Category</th>
+              <th class="text-center">Quantity</th>
+              <th class="text-end">Price</th>
+              <th class="text-end">Total</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let pd of purchaseDetails?.controls; index as i"
+              [formGroupName]="i"
+            >
+              <td>{{ getProductForTable(i).productName }}</td>
+              <td>{{ getProductForTable(i).brandDto.categoryName }}</td>
+              <td class="d-flex justify-content-center">
+                <input
+                  (input)="calculateUnitTotal(i)"
+                  type="text"
+                  class="form-control table-input"
+                  formControlName="quantity"
+                />
+              </td>
+              <td class="text-end">
+                {{ getProductForTable(i).price | currency }}
+              </td>
+              <td class="text-end">
+                <span>{{
+                  purchaseDetails.at(i).get("total").value | currency
+                }}</span>
+              </td>
+              <td class="text-center">
+                <i (click)="remove(i)" class="bi bi-x-lg text-danger"></i>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <span class="total-text"
+                >Total Amount : 
+                <span class="text-primary-color">{{
+                  totalAmount | currency
+                }}</span></span
+              >
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+
+    <!-- Description -->
+    <div class="row mt-5 mb-3">
+      <div class="col">
+        <textarea
+          formControlName="description"
+          type="textarea"
+          class="form-control"
+          placeholder="Enter Description"
+          [ngClass]="showError('description') ? 'is-invalid' : ''"
+        ></textarea>
+      </div>
+    </div>
+
+    <div>
+      <button class="btn btn-outline-secondary me-3">Cancel</button>
+      <button [disabled]="purchaseForm.invalid" (click)="save()" class="btn btn-primary">Purchase</button>
+    </div>
+  </form>
+</div>
+
+<!-- Alert Modal -->
+<app-alert-modal-dialog>
+  <h4 class="alert-heading">NO PRODUCT SELECTED</h4>
+  <p>Select the product first and then check</p>
+</app-alert-modal-dialog>
+
+<!-- Product Info Modal -->
+<app-info-modal-dialog [title]="'Product Information'">
+  <div class="row">
+    <div class="col">
+      <div class="row">
+        <img
+          *ngFor="let photo of selectedProduct?.photos"
+          [src]="photo.photo"
+          class="product-img mb-2"
+        />
+      </div>
+    </div>
+    <div class="col">
+      <div class="mb-3">
+        <label>Product</label>
+        <input
+          type="text"
+          readonly
+          [value]="selectedProduct?.productName"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label>Category</label>
+        <input
+          type="text"
+          readonly
+          [value]="selectedProduct?.subCategoryDto.categoryName"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label>Brand</label>
+        <input
+          type="text"
+          readonly
+          [value]="selectedProduct?.brandDto.brandName"
+          class="form-control"
+        />
+      </div>
+      <div class="mb-3">
+        <label>SubCategory</label>
+        <input
+          type="text"
+          readonly
+          [value]="selectedProduct?.subCategoryDto.subCategoryName"
+          class="form-control"
+        />
+      </div>
+      <div class="row">
+        <div class="col">
+          <div class="mb-3">
+            <label>Price</label>
+            <input
+              type="text"
+              readonly
+              [value]="selectedProduct?.price"
+              class="form-control"
+            />
+          </div>
+        </div>
+        <div class="col">
+          <div class="mb-3">
+            <label>Quantity</label>
+            <input
+              type="text"
+              readonly
+              [value]="selectedProduct?.quantity"
+              class="form-control"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Properties</label>
+        <div *ngFor="let p of selectedProduct?.properties">
+          <div class="row mb-2">
+            <div class="col">
+              <input
+                type="text"
+                [value]="p.propertyName"
+                readonly
+                class="form-control"
+              />
+            </div>
+            <div class="col">
+              <input
+                type="text"
+                [value]="p.propertyValue"
+                readonly
+                class="form-control"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</app-info-modal-dialog>

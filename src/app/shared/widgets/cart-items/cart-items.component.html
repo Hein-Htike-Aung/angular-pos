@@ -1,0 +1,62 @@
+<table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Category</th>
+        <th>SubCategory</th>
+        <th>Brand</th>
+        <th>Quantity</th>
+        <th>Unit Total</th>
+        <th class="text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let od of orderRequestPayload.orderDetails; index as i">
+        <td>{{ od.product.productName }}</td>
+        <td>{{ od.product.subCategoryDto.categoryName }}</td>
+        <td>{{ od.product.subCategoryDto.subCategoryName }}</td>
+        <td>{{ od.product.brandDto.brandName }}</td>
+        <td>
+          <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+            <mat-button-toggle (click)="reduceQuantity(od.product)">
+              <i class="fa fa-minus text-danger"></i>
+            </mat-button-toggle>
+            <mat-button-toggle>
+              <span class="mx-3">{{ od.quantity }}</span>
+            </mat-button-toggle>
+            <mat-button-toggle (click)="addQuantity(od.product)">
+              <i class="fa fa-plus text-primary"></i>
+            </mat-button-toggle>
+          </mat-button-toggle-group>
+        </td>
+        <td>
+          {{ getUnitTotal(i) | currency }}
+        </td>
+        <td class="text-center">
+          <i
+            (click)="confirmDelete(od.product)"
+            class="fa fa-trash delete-icon"
+          ></i>
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <span class="total-text"
+          >Total Amount :
+          <span class="text-primary-color">{{
+            totalAmount | currency
+          }}</span></span
+        >
+      </tr>
+    </tfoot>
+  </table>
+
+  
+<app-confirm-modal-dialog
+[disableSubmitButton]="false"
+(submitButton)="delete($event)"
+>
+<h4 class="alert-heading">BLOCK EMPLOYEE</h4>
+<p>Are you sure you want to block {{ selectedProduct?.productName }} ?</p>
+</app-confirm-modal-dialog>

@@ -1,0 +1,57 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> SubCategory List
+  </h3>
+
+  <div class="row mb-4">
+    <div class="col">
+      <input
+        type="search"
+        placeholder="Search SubCategory..."
+        style="width: 20rem"
+        [(ngModel)]="keyword"
+        (input)="search(keyword)"
+        class="form-control float-end"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <table class="table tabel-hover" *ngIf="subCategories.length != 0">
+      <thead>
+        <tr>
+          <th>SubCategory</th>
+          <th>Category</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let sc of subCategories">
+          <td>{{ sc.subCategoryName }}</td>
+          <td>{{ sc.categoryName }}</td>
+          <td>
+            <button (click)="confirmDelete(sc)" class="btn btn-outline-danger">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div *ngIf="subCategories?.length == 0" class="col mt-5">
+    <div class="alert alert-info">
+      <h4 class="alert-heading">NO SUB CATEGORY</h4>
+      <p>No subcategory were found.</p>
+    </div>
+  </div>
+</div>
+
+<app-confirm-modal-dialog
+  [disableSubmitButton]="false"
+  (submitButton)="delete($event)"
+>
+  <h4 class="alert-heading">DELETE SUBCATEGORY</h4>
+  <p>Are you sure you want to delete {{ subCategory?.subCategoryName }} ?</p>
+</app-confirm-modal-dialog>

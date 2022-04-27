@@ -1,0 +1,116 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Supplier Management
+  </h3>
+
+  <div class="row">
+    <div class="col">
+      <input
+        class="form-control"
+        type="search"
+        style="width: 20rem"
+        [(ngModel)]="keyword"
+        (input)="search(keyword)"
+        placeholder="Search Supplier..."
+      />
+    </div>
+    <div class="col">
+      <button (click)="addNew()" class="btn btn-primary float-end">
+        Add New
+      </button>
+    </div>
+  </div>
+
+  <table class="table table-hover mt-5" *ngIf="suppliers?.length > 0">
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Org Name</th>
+        <th>Phone</th>
+        <th>Address</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let s of suppliers">
+        <td>{{ s.fullName }}</td>
+        <td>{{ s.orgName }}</td>
+        <td>{{ s.phone }}</td>
+        <td>{{ s.address }}</td>
+        <td>
+          <i
+            (click)="update(s)"
+            class="fa fa-pencil text-primary-color me-3"
+          ></i>
+          <i (click)="confirmDelete(s)" class="bi bi-x-lg text-danger"></i>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="suppliers?.length == 0" class="col mt-5">
+    <div class="alert alert-info">
+      <h4 class="alert-heading">NO SUPPLIERS</h4>
+      <p>No supplier were found.</p>
+    </div>
+  </div>
+</div>
+
+<app-form-modal-dialog
+  [title]="supplierDto?.id ? 'Edit Supplier' : 'Add New Supplier'"
+  [disableSubmitButton]="supplierForm.invalid"
+  (submitButton)="save()"
+>
+  <form [formGroup]="supplierForm">
+    <div class="mb-3">
+      <label class="form-label">Full Name</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Full Name"
+        formControlName="fullName"
+        [ngClass]="showError('fullName') ? 'is-invalid' : ''"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Phone</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Phone"
+        formControlName="phone"
+        [ngClass]="showError('phone') ? 'is-invalid' : ''"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Org Name</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Org Name"
+        formControlName="orgName"
+        [ngClass]="showError('orgName') ? 'is-invalid' : ''"
+      />
+    </div>
+    <div class="mb-3">
+      <label class="form-label">Address</label>
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Address"
+        formControlName="address"
+        [ngClass]="showError('address') ? 'is-invalid' : ''"
+      />
+    </div>
+  </form>
+</app-form-modal-dialog>
+
+<app-confirm-modal-dialog
+  [disableSubmitButton]="false"
+  (submitButton)="delete($event)"
+>
+  <h4 class="alert-heading">DELETE SUPPLIER</h4>
+  <p>Are you sure you want to delete {{ supplierDto?.fullName }} ?</p>
+</app-confirm-modal-dialog>

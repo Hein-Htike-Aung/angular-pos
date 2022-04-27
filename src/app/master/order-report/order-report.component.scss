@@ -1,0 +1,16 @@
+tr {
+  & :last-child {
+    width: 17rem;
+  }
+}
+
+.total-text {
+  position: absolute;
+  right: 14rem;
+}
+
+@media print {
+    button {
+      display: none;
+    }
+}

@@ -1,0 +1,67 @@
+<app-header></app-header>
+
+<div class="container mt-5">
+  <h2 class="text-primary-color"><i class="fa fa-bars"></i> Your Order List</h2>
+
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th>Order Date</th>
+        <th>Delivery Date</th>
+        <th>Order Details</th>
+        <th>Unit Total</th>
+        <th>Paid By</th>
+        <th>Description</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let o of orders; index as i">
+        <td>
+          <span>{{ o.orderDate | instantDate | date }}</span>
+        </td>
+        <th>
+          <span>
+            {{ o.deliveryDate ? (o.deliveryDate | instantDate | date) : "-" }}
+          </span>
+        </th>
+
+        <td>
+          <span *ngFor="let od of o.orderDetails">
+            <span
+              >{{ od.productResponse.productName }} : {{ od.quantity }}</span
+            >
+            <br />
+          </span>
+        </td>
+        <td>
+          {{ getUnitTotal(i) | currency }}
+        </td>
+        <td>
+          {{ o.payment.cardType }}
+        </td>
+        <td>{{ o.description }}</td>
+        <td>
+          <span *ngIf="o.orderStatus == 'PENDING'" class="badge bg-danger"
+            >Not Delivery Yet</span
+          >
+          <span *ngIf="o.orderStatus == 'DELIVERED'" class="badge bg-success"
+            >DELIVERED</span
+          >
+        </td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <span class="total-text"
+          >Total Amount :
+          <span class="text-primary-color">{{
+            totalAmount | currency
+          }}</span></span
+        >
+      </tr>
+    </tfoot>
+  </table>
+
+  <button [routerLink]="'/'" class="btn btn-outline-secondary">Back</button>
+</div>

@@ -1,0 +1,88 @@
+<h3 class="text-primary-color mb-2 mt-5">
+  <i class="fa fa-user"></i> {{ employeeDto?.fullName }}
+</h3>
+
+<div class="row">
+  <div class="col">
+    <form [formGroup]="employeeForm" (ngSubmit)="update()">
+      <div class="mb-3">
+        <label class="form-label">Phone</label>
+        <input formControlName="phone" type="text" class="form-control" 
+        [ngClass]="showError('phone') ? 'is-invalid' : ''"/>
+        <span *ngIf="showError('phone')" class="text-danger form-text">
+          Provide Phone Number
+        </span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input formControlName="email" type="text" class="form-control" 
+        [ngClass]="showError('email') ? 'is-invalid' : ''"/>
+        <span *ngIf="showError('email')" class="text-danger form-text">
+          Provide Email Address
+        </span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Address</label>
+        <input formControlName="address" type="text" class="form-control" 
+        [ngClass]="showError('address') ? 'is-invalid' : ''"/>
+        <span *ngIf="showError('address')" class="text-danger form-text">
+          Provide Address
+        </span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Marital Status</label>
+        <input
+          formControlName="maritalStatus"
+          type="text"
+          class="form-control"
+          [ngClass]="showError('maritalStatus') ? 'is-invalid' : ''"
+        />
+        <span *ngIf="showError('maritalStatus')" class="text-danger form-text">
+          Provide Marintal Status
+        </span>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Date of Bith</label>
+        <input
+          [value]="employeeDto?.dob | instantDate | date"
+          type="text"
+          class="form-control"
+          readonly
+        />
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Gender</label>
+        <input
+          [value]="employeeDto?.gender"
+          type="text"
+          class="form-control"
+          readonly
+        />
+      </div>
+      <div>
+        <button (click)="goBack()" class="btn btn-outline-secondary me-3">
+          <i class="fa fa-angle-left"></i> Back
+        </button>
+        <button
+          type="submit"
+          [disabled]="employeeForm.invalid"
+          class="btn btn-primary"
+        >
+          SAVE CHANGES
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="col">
+    <div class="mb-3">
+      <label class="form-label">Username</label>
+      <input
+        [value]="employeeDto?.username"
+        type="text"
+        class="form-control"
+        readonly
+      />
+    </div>
+    <button routerLink="/user-profile/password" class="btn btn-primary">Change Password</button>
+  </div>
+</div>

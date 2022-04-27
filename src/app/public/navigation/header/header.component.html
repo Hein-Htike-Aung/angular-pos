@@ -1,0 +1,57 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark bg-gradient">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">Hypie</a>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li
+          class="nav-item dropdown"
+          *ngIf="isLoggedIn || userRole === 'ROLE_CUSTOMER'"
+        >
+          <a
+            [routerLink]="['/transaction/cus-order-list']"
+            routerLinkActive="active"
+            class="nav-link"
+            ><i class="fa fa-cubes"></i> Orders
+          </a>
+        </li>
+      </ul>
+
+      <ul class="navbar-nav">
+        <li *ngIf="!isLoggedIn">
+          <a
+            [routerLink]="['/login']"
+            routerLinkActive="active"
+            [routerLinkActiveOptions]="{ exact: true }"
+            class="nav-link"
+            >Login</a
+          >
+        </li>
+        <li *ngIf="!isLoggedIn">
+          <a
+            [routerLink]="['/sign-up']"
+            routerLinkActive="active"
+            class="nav-link"
+            >SignUp</a
+          >
+        </li>
+        <li *ngIf="isLoggedIn || userRole === 'ROLE_CUSTOMER'">
+          <a [routerLink]="'/transaction/cart-items'" class="nav-link">
+            <i class="fa fa-cart-plus" style="font-size: 1.3rem"></i>
+            {{ getCartCount() }}
+          </a>
+        </li>
+        <li *ngIf="isLoggedIn">
+          <a (click)="goToUserProfile()" class="nav-link"
+            ><i class="fa fa-user"></i> {{ username }}</a
+          >
+        </li>
+        <li *ngIf="isLoggedIn">
+          <a class="nav-link" (click)="logout()">
+            <i class="fa-duotone fa-arrow-right-from-bracket"></i> Logout
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>

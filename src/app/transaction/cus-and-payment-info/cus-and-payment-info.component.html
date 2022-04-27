@@ -1,0 +1,137 @@
+<app-header></app-header>
+
+<div class="container mt-5">
+  <div class="d-flex gap-5">
+    <!-- Customer Information -->
+    <div style="width: 32rem">
+      <h2 class="text-primary-color">
+        <i class="fa fa-user"></i> Your Information
+      </h2>
+      <div class="card">
+        <div class="card-body">
+          <form [formGroup]="customerForm">
+            <div class="mb-3">
+              <label class="form-label">Name</label>
+              <input
+                [ngClass]="showErrorForCustomer('fullName') ? 'is-invalid' : ''"
+                type="text"
+                class="form-control"
+                formControlName="fullName"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Phone</label>
+              <input
+                [ngClass]="showErrorForCustomer('phone') ? 'is-invalid' : ''"
+                type="text"
+                class="form-control"
+                formControlName="phone"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input
+                [ngClass]="showErrorForCustomer('email') ? 'is-invalid' : ''"
+                type="text"
+                class="form-control"
+                formControlName="email"
+              />
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Address</label>
+              <input
+                [ngClass]="showErrorForCustomer('address') ? 'is-invalid' : ''"
+                type="text"
+                class="form-control"
+                formControlName="address"
+              />
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="mt-3">
+        <button
+          [routerLink]="'/transaction/cart-items'"
+          class="btn btn-outline-secondary me-3"
+        >
+          Back
+        </button>
+        <button
+          [disabled]="this.customerForm.invalid || this.paymentForm.invalid"
+          (click)="addPaymentAndCustomerInfo()"
+          class="btn btn-primary"
+        >
+          Next <i class="fa fa-angle-right"></i>
+        </button>
+      </div>
+    </div>
+    <!-- Payment Information -->
+    <div style="width: 32rem">
+      <h2 class="text-primary-color">
+        <i class="fa fa-money"></i> Payment Information
+      </h2>
+
+      <div class="card">
+        <div class="card-body">
+          <div class="d-flex mb-4 mt-2 gap-3">
+            <img class="payment-card" src="../../../assets/images/visa.png" />
+            <img
+              class="payment-card"
+              src="../../../assets/images/master-card.png"
+            />
+            <img
+              class="payment-card"
+              src="../../../assets/images/discover.png"
+            />
+          </div>
+
+          <form [formGroup]="paymentForm">
+            <div class="mb-3">
+              <label class="form-label">Card</label>
+              <input
+                [ngClass]="showErrorForPayment('card') ? 'is-invalid' : ''"
+                type="text"
+                class="form-control"
+                formControlName="card"
+                placeholder="xxxx-xxxx-xxxx-xxxx"
+              />
+            </div>
+
+            <div class="row">
+              <div class="col">
+                <div class="mb-3">
+                  <label class="form-label">Expiary Date</label>
+                  <input
+                    [ngClass]="
+                      showErrorForPayment('expireDate') ? 'is-invalid' : ''
+                    "
+                    type="text"
+                    class="form-control"
+                    formControlName="expireDate"
+                    placeholder="00/00"
+                  />
+                </div>
+              </div>
+              <div class="col">
+                <div class="mb-3">
+                  <label class="form-label">Safe Guard</label>
+                  <input
+                    [ngClass]="
+                      showErrorForPayment('safeGuard') ? 'is-invalid' : ''
+                    "
+                    type="text"
+                    class="form-control"
+                    formControlName="safeGuard"
+                    placeholder="xxx"
+                  />
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

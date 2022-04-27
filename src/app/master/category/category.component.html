@@ -1,0 +1,100 @@
+<app-side-bar></app-side-bar>
+<!-- Content -->
+<div class="side-bar-container">
+  <h3 class="text-primary-color mb-5">
+    <i class="fa fa-bars"></i> Category List
+  </h3>
+
+  <div class="row">
+    <div class="col">
+      <form [formGroup]="categoryForm" class="row" (ngSubmit)="save()">
+        <div class="col mb-3">
+          <input
+            style="width: 20rem"
+            type="text"
+            class="form-control"
+            formControlName="categoryName"
+            placeholder="Category Name"
+          />
+          <span class="form-text text-danger" *ngIf="showError('categoryName')">
+            Provide Category Name
+          </span>
+        </div>
+        <div class="col mb-3">
+          <button
+            [disabled]="categoryForm.invalid"
+            type="submit"
+            class="btn btn-primary"
+          >
+            SAVE
+          </button>
+        </div>
+      </form>
+    </div>
+    <div class="col">
+      <input
+        style="width: 20rem"
+        type="search"
+        [(ngModel)]="keyword"
+        (input)="search(keyword)"
+        placeholder="search category..."
+        class="form-control float-end"
+      />
+    </div>
+  </div>
+
+  <table class="table table-hover mt-5" *ngIf="categories?.length !== 0">
+    <thead>
+      <tr>
+        <th>Category</th>
+        <th>SubCategory</th>
+        <th>Brand</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let c of categories">
+        <td>{{ c.categoryName }}</td>
+        <td>
+          <button
+            (click)="goToSubCategoryEdit(c)"
+            class="btn btn-outline-primary"
+          >
+            Add Subcategory
+          </button>
+        </td>
+        <td>
+          <button (click)="goToBrandEdit(c)" class="btn btn-outline-primary">
+            Add Brand
+          </button>
+        </td>
+        <td>
+          <button (click)="edit(c)" class="btn btn-outline-primary me-2">
+            Update
+          </button>
+          <button
+            (click)="confirmDeleteCategory(c)"
+            class="btn btn-outline-danger"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div *ngIf="categories?.length === 0" class="col mt-5">
+    <div class="alert alert-info">
+      <h4 class="alert-heading">NO CATEGORY</h4>
+      <p>No Category were found.</p>
+    </div>
+  </div>
+</div>
+
+<app-confirm-modal-dialog
+  [disableSubmitButton]="false"
+  (submitButton)="delete($event)"
+>
+  <h4 class="alert-heading">DELETE CATEGORY</h4>
+  <p>Are you sure you want to delete {{ category?.categoryName }} ?</p>
+</app-confirm-modal-dialog>

@@ -1,0 +1,67 @@
+<div class="container mt-5">
+  <div class="row">
+
+    <div class="col-8"></div>
+
+    <div class="col-4">
+      <table class="table table-borderless">
+        <tbody>
+          <tr>
+            <td>CustomerName</td>
+            <td>
+              <strong>{{ order.customerDto.fullName }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>CustomerPhone</td>
+            <td>
+              <strong>{{ order.customerDto.phone }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Customer Email</td>
+            <td>
+              <strong>{{ order.customerDto.email }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Customer Address</td>
+            <td>
+              <strong>{{ order.customerDto.address }}</strong>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Product</th>
+        <th>Category</th>
+        <th>Brand</th>
+        <th>Quantity</th>
+        <th>Unit Price</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let od of order.orderDetails; index as i">
+        <td>{{ od.productResponse.productName }}</td>
+        <td>{{ od.productResponse.subCategoryDto.subCategoryName }}</td>
+        <td>{{ od.productResponse.brandDto.brandName }}</td>
+        <td>{{ od.quantity }}</td>
+        <td>{{ getUnitTotal(i) | currency }}</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr>
+        <span class="total-text"
+          >Total Amount : <span>{{ totalAmount | currency }}</span></span
+        >
+      </tr>
+    </tfoot>
+  </table>
+
+  <button (click)="print()" class="float-end mt-5 btn btn-light">Print</button>
+</div>
